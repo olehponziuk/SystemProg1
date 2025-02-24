@@ -1,0 +1,3 @@
+C:/Users/kuzni/CLionProjects/lab1Sus/cmake-build-debug/CMakeFiles/lab1Sus.dir
+C:/Users/kuzni/CLionProjects/lab1Sus/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/kuzni/CLionProjects/lab1Sus/cmake-build-debug/CMakeFiles/rebuild_cache.dir
