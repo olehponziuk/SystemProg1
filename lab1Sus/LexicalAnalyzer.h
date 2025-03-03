@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 
+std::vector<std::string> Split(const std::string & str, char separator);
+
 
 class LexicalAnalyzer {
 private:

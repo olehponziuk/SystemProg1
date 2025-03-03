@@ -24,12 +24,31 @@ LexicalAnalyzer::LexicalAnalyzer(char metaSymbol, const std::string &mask)
 
 bool LexicalAnalyzer::IsMatch(const std::string word)
 {
-    int wordLength = word.length();
     std::vector<std::string> maskItems = Split(_mask, _metaSymbol);
+    int wordLength = word.length();
+    int maskItemsSize = maskItems.size();
+
+    if (wordLength < maskItems[0].size() || wordLength < maskItems[maskItemsSize - 1].size())
+        return false;
+    if (_mask[0] != _metaSymbol)
+        for(int i = 0; i < maskItems[0].size(); i++)
+            if (word[i] != maskItems[0][i]) return false;
+
+    /*if (word[wordLength - 1] != _metaSymbol){
+        int j = wordLength - 1;
+        for(int i = maskItems[maskItemsSize - 1].size() - 1; i >= 0 ; i--) {
+            if (word[j] != maskItems[maskItemsSize - 1][i])
+                return false;
+            j--;
+        }
+    }*/
+    bool backIsMetaSymbol = false;
+    if (_mask[_mask.size() - 1] == _metaSymbol)
+        backIsMetaSymbol = true;
 
     int start = 0;
-    for(std::string item : maskItems) {
-        int itemLength = item.length();
+    for(int k = 0; k < maskItemsSize; k++) {
+        int itemLength = maskItems[k].length();
         int last = start + itemLength - 1;
         int first = start;
         if (itemLength > wordLength)
@@ -38,12 +57,14 @@ bool LexicalAnalyzer::IsMatch(const std::string word)
         while(last != wordLength){
             bool isCorrect = true;
             for(int i = 0; i < itemLength; i++ ){
-                if( item[i] != word[first + i]) {
+                if( maskItems[k][i] != word[first + i]) {
                     isCorrect = false;
                     break;
                 }
             }
             if (isCorrect) {
+                if (k == maskItemsSize - 1 && !backIsMetaSymbol && last != wordLength - 1)
+                    return false;
                 hasItem = true;
                 start = last + 1;
                 break;

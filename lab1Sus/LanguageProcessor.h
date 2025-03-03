@@ -1,6 +1,7 @@
 #ifndef LAB1SUS_LANGUAGEPROCESSOR_H
 #define LAB1SUS_LANGUAGEPROCESSOR_H
 #include <string>
+#include <algorithm>
 #include "LexicalAnalyzer.h"
 
 class LanguageProcessor {

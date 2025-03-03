@@ -1,16 +1,5 @@
 #include "LanguageProcessor.h"
 
-std::vector<std::string> Split(const std::string & str, char separator)
-{
-    std::stringstream ss(str);
-    std::string item;
-    std::vector<std::string> result;
-    while(std::getline(ss, item, separator))
-        result.push_back(item);
-
-    return result;
-}
-
 LanguageProcessor::LanguageProcessor(const std::string & outFile, const std::string & inFile, char metaSymbol, const std::string & mask)
 {
     _outFile = outFile;
@@ -45,23 +34,30 @@ LanguageProcessor LanguageProcessor::LanguageProcessorBuilder::build()
 
 void LanguageProcessor::Run()
 {
-    std::string str;
+    std::string strTmp, str = "";
     std::ifstream in;
     in.open(_inFile);
     if(in.is_open()){
-        while (std::getline(in, str)){}
+        while (std::getline(in, strTmp)){
+            str = str + strTmp + " ";
+        }
     }
     in.close();
 
 
     std::vector<std::string> words = _analyzer.CheckInRange(Split(str, ' '));
 
+    std::sort(words.begin(), words.end(),
+              [](const std::string & str1, const std::string & str2){
+        return str1.length() < str2.length();
+    });
+
     std::ofstream out;
     out.open(_outFile);
     if (out.is_open())
     {
-        for(auto word : words)
-            out << word << std::endl;
+        for(const auto & word : words)
+            out << word << " ";
     }
     out.close();
 }
